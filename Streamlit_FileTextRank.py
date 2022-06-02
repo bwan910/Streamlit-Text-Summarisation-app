@@ -25,7 +25,6 @@ import statistics
 import docx2txt
 from rouge import Rouge
 
-
 stop_words = stopwords.words('english')
 rouge = Rouge()
 
@@ -41,7 +40,7 @@ def generate_summary():
     st.markdown("<h2 style='text-align: center; color: white;'>OR</h2>", unsafe_allow_html=True)
 
     input_text = st.text_area('Paste Article Text')
-    number = st.number_input('Type the summarized sentence number you need:', step=1)
+    number = st.number_input('Type the summarised sentence number you need:  (If is set to 0, then will be default to 5 sentences)', step=1)
 
     #def create_download_link(val, filename):
      #   b64 = base64.b64encode(val)  # val looks like b'...'
@@ -113,7 +112,7 @@ def generate_summary():
         ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
         content = []    # variable for storing the summary in list
 
-        st.title("Summarized Text")
+        st.title("Summarised Text")
 
         if number == 0:         # if no number sentence is entered, then set default as display 5 sentences of summary
             if len(sentences) < 5:      # if the length of sentence is shorter than 5 or unable to extract, then print error message
@@ -126,12 +125,11 @@ def generate_summary():
                     reference = str(ranked_sentences[i][1]).split(".")
                     candidate = list(file_data.split("."))[i]
                     bleu_score = sentence_bleu(reference[:len(candidate)], candidate)
-                   # st.write("BLEU Score: " +str(score))
-                    print(bleu_score)
-
+                    print("Bleu Score Sentence "+str(i)+": "+str(bleu_score))
                     # Calculate Rouge score
                     reference = ranked_sentences[i][1]
-                    print("Rouge score"+str(rouge.get_scores(reference,file_data)))
+                    print("Rouge score Sentence "+str(i)+": "+str(rouge.get_scores(reference,file_data)))
+                    print("\n")
 
                 # Calling export button 
                 convert = '\n\n'.join(map(str,content))   # since the summary is in a list convert back to string in order to allow for download
@@ -146,11 +144,11 @@ def generate_summary():
                 reference = str(ranked_sentences[i][1]).split(".")
                 candidate = list(file_data.split("."))[i]
                 bleu_score = sentence_bleu(reference[:len(candidate)], candidate)
-                #st.write("BLEU Score: " +str(score))
-                print(bleu_score)
-
+                print("Bleu Score Sentence "+str(i)+": "+str(bleu_score))
+                # Calculate Rouge score
                 reference = ranked_sentences[i][1]
-                print("Rouge score"+str(rouge.get_scores(reference,file_data)))
+                print("Rouge score Sentence "+str(i)+": "+str(rouge.get_scores(reference,file_data)))
+                print("\n")
 
 
             # Calling export button for export summary to text file
@@ -239,7 +237,7 @@ def generate_summary():
             ranked_sentences = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)
             content = []    # variabl for storing the summary in list
 
-            st.title("Summarized Text")
+            st.title("Summarised Text")
         
 
             if number == 0:          # if no number sentence is entered, then set default as display 5 sentences of summary
@@ -255,11 +253,13 @@ def generate_summary():
                         candidate = list(input_text.split("."))[i]
                         bleu_score = sentence_bleu(reference[:len(candidate)], candidate)
                         #st.write("BLEU Score: " +str(score))
-                        print(bleu_score)
+                        #print("Bleu Score Sentence "+str(i)+": "+str(bleu_score))
+                        #print("\n")
 
                         # Calculate Rouge score
                         reference = ranked_sentences[i][1]
-                        print("Rouge score"+str(rouge.get_scores(reference,input_text)))
+                        print("Rouge score Sentence "+str(i)+": "+str(rouge.get_scores(reference,input_text)))
+                        print("\n")
 
                      # Call export button for export to text file   
                     convert = '\n\n'.join(map(str,content))
@@ -277,11 +277,13 @@ def generate_summary():
                     candidate = list(input_text.split("."))[i]
                     bleu_score = sentence_bleu(reference[:len(candidate)], candidate)
                     #st.write("BLEU Score: " +str(score))
-                    print(bleu_score)
+                    print("Bleu Score Sentence "+str(i)+": "+str(bleu_score))
+                    print("\n")
 
-                     # Calculate Rouge score
-                    reference = ranked_sentences[i][1]
-                    print("Rouge score"+str(rouge.get_scores(reference,input_text)))
+                        # Calculate Rouge score
+                   # reference = ranked_sentences[i][1]
+                   # print("Rouge score Sentence "+str(i)+": "+str(rouge.get_scores(reference,input_text)))
+                   # print("\n")
 
                 convert = '\n\n'.join(map(str,content))  # since the summary is in a list convert back to string in order to allow for download
                 export_button(convert)
@@ -290,7 +292,7 @@ def generate_summary():
 
             
 
-    if st.button('Summarize'):
+    if st.button('Summarise'):
     # when no file and no input text are given then print error message
        # if uploaded_file is None and len(input_text) <= 0 and len(input_url) <= 0:
         if uploaded_file is None and len(input_text) <= 0:
