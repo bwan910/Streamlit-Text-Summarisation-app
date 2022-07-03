@@ -94,7 +94,6 @@ smmap==5.0.0
 soupsieve==2.3.2.post1
 spotipy==2.19.0
 stack-data==0.3.0
-streamlit==1.10.0
 terminado==0.15.0
 threadpoolctl==3.1.0
 tinycss2==1.1.1
